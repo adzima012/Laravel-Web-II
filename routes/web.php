@@ -11,8 +11,20 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
+// Tampilin semua barang (Read)
 Route::get('/barang', [BarangController::class, 'index'])->name('barang');
 
-Route::resource('barang', BarangController::class);
+// Tampilin from tambah data (Create - form)
+Route::get('/barang/create', [BarangController::class, 'create'])->name('barang.create');
+
+// Simpen data baru (Create - action)
+Route::post('/barang/store', [BarangController::class, 'store'])->name('barang.store');
+
+// Tampilin from edit data (Update - form)
+Route::get('/barang/edit/{id}', [BarangController::class, 'edit'])->name('barang.edit');
+
+// Simpen data yang diedit (Update - action)
+Route::put('/barang/update/{id}', [BarangController::class, 'update'])->name('barang.update');
+
+// Hapus data (Delete)
+Route::delete('/barang/{id}', [BarangController::class, 'destroy'])->name('barang.destroy');

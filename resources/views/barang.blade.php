@@ -6,29 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Daftar Barang</title>
+    <title>Tabel Barang</title>
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
 </head>
 
-<body>
+<body class="bg-[#FDFDFC] dark:bg-[#0a0a0a]">
 
-<div class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 lg:justify-top min-h-screen flex-col">
+<div class="container mx-auto mt-10 mb-10 px-10" >
     <div class="grid grid-cols-8 gap-4 mb-4 p-5">
         <div class="col-span-4 mt-2">
-            <h1 class="text-blue-600 dark:text-sky-400 text-3xl font-bold">DAFTAR BARANG</h1>
+            <h1 class="text-3xl font-bold text-white">
+                DAFTAR BARANG
+            </h1>
+        </div>
+        <div class="col-span-4">
+            <div class="flex justify-end">
+                <a href="{{ route('barang.create') }}"
+                   class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+                   id="add-product-btn">Tambakan Barang</a>
+            </div>
         </div>
     </div>
-
-    <div class="bg-white p-5 rounded shadow-sm">
+    <div class="bg-bg-[#FDFDFC] dark:bg-[#0a0a0a] p-5 rounded shadow-sm">
         @if (session('success'))
             <div class="p-3 rounded bg-green-500 text-green-100 mb-4">
                 {{ session('success') }}
             </div>
         @endif
-
         <div class="relative overflow-x-auto">
-            <table class="w-full text-sm text-left text-gray-500">
-                <thead class="text-xs text-white uppercase bg-gray-500">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th class="px-6 py-3">No</th>
                     <th class="px-6 py-3">Nama</th>
@@ -40,28 +47,44 @@
                 </thead>
                 <tbody>
                 @forelse ($barangs as $barang)
-                    <tr class="bg-white border-b">
-                        <td class="px-6 py-4">{{ $loop->iteration }}</td>
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                    <td class="px-6 py-4">{{ $loop->iteration }}</td>
                         <td class="px-6 py-4">{{ $barang->nama }}</td>
                         <td class="px-6 py-4">{{ $barang->kode }}</td>
                         <td class="px-6 py-4">{{ $barang->stok }}</td>
                         <td class="px-6 py-4">{{ $barang->harga }}</td>
-                        
+                        <td class="px-6 py-4">
+                            <form onsubmit="return confirm('Apakah Anda Yakin ?');"
+                                  action="{{ route('barang.destroy', $barang) }}" method="POST">
+
+                                @csrf
+                                @method('DELETE')
+                                <a href="{{ route('barang.edit', $barang) }}" id="{{ $barang->id }}-edit-btn"
+                                   class="inline-block px-6 py-2.5 bg-blue-400 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-500 hover:shadow-lg focus:bg-blue-500 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-600 active:shadow-lg transition duration-150 ease-in-out">Edit</a>
+
+                                <button type="submit"
+                                        class="inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out"
+                                        id="{{ $barang->id }}-delete-btn">Delete
+                                </button>
+                            </form>
+                        </td>
                     </tr>
+
                 @empty
                     <tr>
-                        <td colspan="6" class="text-center px-6 py-4">Data kosong</td>
+                        <td class="text-center text-sm text-gray-900 px-6 py-4 whitespace-nowrap" colspan="6">
+                            Barang Kosong
+                        </td>
                     </tr>
                 @endforelse
                 </tbody>
             </table>
         </div>
 
-        <div class="mt-3">
-            {{ $barangs->links() }}
-        </div>
     </div>
+
 </div>
 
 </body>
+
 </html>
