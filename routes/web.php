@@ -28,3 +28,18 @@ Route::put('/barang/update/{id}', [BarangController::class, 'update'])->name('ba
 
 // Hapus data (Delete)
 Route::delete('/barang/{id}', [BarangController::class, 'destroy'])->name('barang.destroy');
+
+Route::get('/artikel1', function () {return view('artikel1');});
+Route::get('/artikel2', function () {return view('artikel2');});
+
+Route::get('Bioskop/list_cinema', function () {
+    return view('Bioskop.list_cinema');
+})->name('bioskop.list_cinema');
+
+Route::get('Bioskop/list_film', function () {
+    return view('Bioskop.list_film');
+})->name('bioskop.list_film');
+
+Route::get('Bioskop/menu_bioskop', function () {
+    return view('Bioskop.menu_bioskop');
+})->name('bioskop.menu_bioskop');
