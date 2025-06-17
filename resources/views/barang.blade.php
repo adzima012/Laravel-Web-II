@@ -1,90 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Tabel Barang</title>
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <title>Daftar Barang</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 </head>
-
-<body class="bg-[#FDFDFC] dark:bg-[#0a0a0a]">
-
-<div class="container mx-auto mt-10 mb-10 px-10" >
-    <div class="grid grid-cols-8 gap-4 mb-4 p-5">
-        <div class="col-span-4 mt-2">
-            <h1 class="text-3xl font-bold text-white">
-                DAFTAR BARANG
-            </h1>
-        </div>
-        <div class="col-span-4">
-            <div class="flex justify-end">
-                <a href="{{ route('barang.create') }}"
-                   class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-                   id="add-product-btn">Tambakan Barang</a>
-            </div>
-        </div>
+<body class="p-10 bg-gray-50">
+    <div class="mb-6 flex justify-between items-center">
+        <h1 class="text-2xl font-bold">DAFTAR BARANG</h1>
+        <a href="#" class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 transition">TAMBAHKAN BARANG</a>
     </div>
-    <div class="bg-bg-[#FDFDFC] dark:bg-[#0a0a0a] p-5 rounded shadow-sm">
-        @if (session('success'))
-            <div class="p-3 rounded bg-green-500 text-green-100 mb-4">
-                {{ session('success') }}
-            </div>
-        @endif
-        <div class="relative overflow-x-auto">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+
+    <div class="overflow-x-auto">
+        <table id="barang-table" class="display w-full">
+            <thead class="bg-gray-100">
                 <tr>
-                    <th class="px-6 py-3">No</th>
-                    <th class="px-6 py-3">Nama</th>
-                    <th class="px-6 py-3">Kode</th>
-                    <th class="px-6 py-3">Stok</th>
-                    <th class="px-6 py-3">Harga</th>
-
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Kode</th>
+                    <th>Stok</th>
+                    <th>Harga</th>
+                    <th>Aksi</th>
                 </tr>
-                </thead>
-                <tbody>
-                @forelse ($barangs as $barang)
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                    <td class="px-6 py-4">{{ $loop->iteration }}</td>
-                        <td class="px-6 py-4">{{ $barang->nama }}</td>
-                        <td class="px-6 py-4">{{ $barang->kode }}</td>
-                        <td class="px-6 py-4">{{ $barang->stok }}</td>
-                        <td class="px-6 py-4">{{ $barang->harga }}</td>
-                        <td class="px-6 py-4">
-                            <form onsubmit="return confirm('Apakah Anda Yakin ?');"
-                                  action="{{ route('barang.destroy', $barang) }}" method="POST">
-
-                                @csrf
-                                @method('DELETE')
-                                <a href="{{ route('barang.edit', $barang) }}" id="{{ $barang->id }}-edit-btn"
-                                   class="inline-block px-6 py-2.5 bg-blue-400 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-500 hover:shadow-lg focus:bg-blue-500 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-600 active:shadow-lg transition duration-150 ease-in-out">Edit</a>
-
-                                <button type="submit"
-                                        class="inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out"
-                                        id="{{ $barang->id }}-delete-btn">Delete
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-
-                @empty
+            </thead>
+            <tbody>
+                @foreach($barangs as $index => $barang)
                     <tr>
-                        <td class="text-center text-sm text-gray-900 px-6 py-4 whitespace-nowrap" colspan="6">
-                            Barang Kosong
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $barang->nama }}</td>
+                        <td>{{ $barang->kode }}</td>
+                        <td>{{ $barang->stok }}</td>
+                        <td>{{ number_format($barang->harga, 2, ',', '.') }}</td>
+                        <td class="space-x-2">
+                            <a href="#" class="bg-blue-500 text-white px-3 py-1 rounded text-sm">Edit</a>
+                            <a href="#" class="bg-red-500 text-white px-3 py-1 rounded text-sm">Delete</a>
                         </td>
                     </tr>
-                @endforelse
-                </tbody>
-            </table>
-        </div>
-
+                @endforeach
+            </tbody>
+        </table>
     </div>
 
-</div>
-
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#barang-table').DataTable();
+        });
+    </script>
 </body>
-
 </html>

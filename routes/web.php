@@ -43,3 +43,5 @@ Route::get('Bioskop/list_film', function () {
 Route::get('Bioskop/menu_bioskop', function () {
     return view('Bioskop.menu_bioskop');
 })->name('bioskop.menu_bioskop');
+
+Route::resource('barangNew', App\Http\Controllers\BarangNewController::class);
